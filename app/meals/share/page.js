@@ -5,10 +5,11 @@ import classes from './page.module.css';
 import { shareMeal } from '@/lib/actions';
 import MealsFormSubmit from '@/components/meals/meals-form-submit';
 import { useFormState } from 'react-dom';
+import { useActionState } from 'react';
 
 const SharePage = () => {
 
-  const [state, formAction] = useFormState(shareMeal, {message: null});
+  const [state, formAction] = useActionState(shareMeal, {message: null});
 
   return (
     <>
