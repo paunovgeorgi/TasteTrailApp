@@ -4,6 +4,20 @@ import Image from 'next/image';
 import { getMeal } from '@/lib/meals';
 import { notFound } from 'next/navigation';
 
+
+export async function generateMetadata({params}){
+  const meal = getMeal(params.mealSlug);
+
+  if (!meal) {
+    notFound();
+  }
+
+  return {
+    title: meal.title,
+    description: meal.summary
+  }
+}
+
 const MealDetails = ({params}) => {
   const slug = params.mealSlug;
   const meal = getMeal(slug);
@@ -14,11 +28,13 @@ const MealDetails = ({params}) => {
 
   meal.instructions = meal.instructions.replace(/\n/g, '<br />');
 
+  let imageUrl = meal.image.includes('http') ? meal.image : `https://res.cloudinary.com/dmonewip2/image/upload/v1746535925/meals/${meal.image}`
+
   return (
     <>
       <header className={classes.header}>
         <div className={classes.image}> 
-            <Image src={meal.image} alt={meal.title} fill/>
+            <Image src={imageUrl} alt={meal.title} fill/>
         </div>
         <div className={classes.headerText}> 
           <h1>{meal.title}</h1>
